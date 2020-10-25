@@ -1,4 +1,4 @@
-package com.manning.controllers;
+package com.manning.cakefactory.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

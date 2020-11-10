@@ -1,44 +1,52 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.4.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'org.springframework.boot' version '2.2.5.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 }
 
-group = 'com.manning'
-version = '0.0.1-SNAPSHOT'
+group = 'com.cakefactory'
 sourceCompatibility = '11'
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
 
 repositories {
 	mavenCentral()
 }
 
-test {
-	useJUnitPlatform()
-	testLogging {
-        events "passed", "skipped", "failed"
-    }
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	compileOnly 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.projectlombok:lombok'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.flywaydb:flyway-core'
-	
-	runtimeOnly 'org.postgresql:postgresql'
-	
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'junit', module: 'junit'
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 
-    }
+	runtimeOnly 'org.postgresql:postgresql'
+
 	testImplementation 'net.sourceforge.htmlunit:htmlunit'
-	
-	testCompile 'org.junit.jupiter:junit-jupiter:5.5.2'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+
+	testRuntime 'com.h2database:h2'
 }
 
-
+test {
+	useJUnitPlatform()
+}

@@ -1,11 +1,9 @@
 package com.manning.cakefactory.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.manning.cakefactory.models.Catalog;
-import com.manning.cakefactory.repositories.CatalogJpaRepository;
-import com.manning.cakefactory.repositories.CatalogRepository;
+import com.manning.cakefactory.services.CatalogService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,22 +13,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CakeFactoryController {
 
-    private final CatalogJpaRepository catalogJpaRepository;
+    private CatalogService catalogService;
 
     @Autowired
-    public CakeFactoryController(CatalogJpaRepository catalogJpaRepository) {
-        this.catalogJpaRepository = catalogJpaRepository;
+    public CakeFactoryController(CatalogService catalogService) {
+        this.catalogService = catalogService;
     }
 
     @GetMapping("/home")
     public String showHomePage(Model model) {
 
-        List<Catalog> catalog = new ArrayList<>();
-        this.catalogJpaRepository.findAll().forEach(i -> catalog.add(i));
-        System.out.println("Size" + catalog.size());
-        model.addAttribute("categoryA", "Pastries");
-        model.addAttribute("categoryB", "Cakes");
-        model.addAttribute("categoryC", "Cookies");
+        List<Catalog> catalog = catalogService.listCatalog();
+        model.addAttribute("categoryA", "Cakes");
         model.addAttribute("catalog", catalog);
         return "index";
     }

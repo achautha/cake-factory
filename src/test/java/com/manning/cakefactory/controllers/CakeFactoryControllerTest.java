@@ -23,7 +23,7 @@ public class CakeFactoryControllerTest {
 
     @Test
     public void testHomePage() throws Exception {
-        mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"))
+        mockMvc.perform(get("/home")).andExpect(status().isOk()).andExpect(view().name("index"))
                 .andExpect(content().string(containsString("Cake Factory")));
     }
 }
